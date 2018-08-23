@@ -11,12 +11,18 @@ class AlbumsController < ApplicationController
     @album = Album.new
   end
 
-  def edit
+  def update
+    @album = Album.find(params[:id])
+    
+    if @album.update(album_params)
+      redirect_to @album
+    else
+      render 'edit'
+    end
   end
 
   def create
     params[:albums]
-    params[:title]
 
     @album = Album.new(album_params)
 
@@ -30,10 +36,9 @@ class AlbumsController < ApplicationController
   end
 
   def destroy
+    @album = Album.find(params[:id])
     @album.destroy
-    respond_to do |format|
-      format.html { redirect_to albums_url, notice: 'Album destroyed!'}
-    end
+    redirect_to albums_url, notice: 'Album destroyed!'
   end
 
   private
